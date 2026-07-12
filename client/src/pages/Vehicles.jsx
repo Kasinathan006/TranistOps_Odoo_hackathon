@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
@@ -15,11 +16,24 @@ const EMPTY = {
 };
 
 export default function Vehicles() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [vehicles, setVehicles] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY);
   const [editing, setEditing] = useState(null);
   const [filter, setFilter] = useState({ status: '', type: '' });
+
+  useEffect(() => {
+    if (searchParams.get('new') === 'true') {
+      setShowForm(true);
+      setEditing(null);
+      setForm(EMPTY);
+      
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('new');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const load = async () => {
     const params = new URLSearchParams();

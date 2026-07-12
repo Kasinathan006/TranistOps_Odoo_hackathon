@@ -19,6 +19,9 @@ import LogisticsReportsAnalytics from './pages/generated/LogisticsReportsAnalyti
 import MaintenanceServiceScheduler from './pages/generated/MaintenanceServiceScheduler';
 import OperationalExpensesLedger from './pages/generated/OperationalExpensesLedger';
 import SystemSettingsConfiguration from './pages/generated/SystemSettingsConfiguration';
+import SystemSettingsUsers from './pages/generated/SystemSettingsUsers';
+import SystemSettingsFleet from './pages/generated/SystemSettingsFleet';
+import SystemSettingsIntegrations from './pages/generated/SystemSettingsIntegrations';
 import TmsLogin from './pages/generated/TmsLogin';
 import TripsLogisticsLog from './pages/generated/TripsLogisticsLog';
 import VehicleFleetRegistry from './pages/generated/VehicleFleetRegistry';
@@ -54,6 +57,10 @@ export default function App() {
           <Route path="/maintenance" element={<ProtectedLayout><Maintenance /></ProtectedLayout>} />
           <Route path="/fuel" element={<ProtectedLayout><Fuel /></ProtectedLayout>} />
           <Route path="/reports" element={<ProtectedLayout><Reports /></ProtectedLayout>} />
+          <Route path="/settings" element={<ProtectedLayout><SystemSettingsConfiguration /></ProtectedLayout>} />
+          <Route path="/settings/users" element={<ProtectedLayout><SystemSettingsUsers /></ProtectedLayout>} />
+          <Route path="/settings/fleet" element={<ProtectedLayout><SystemSettingsFleet /></ProtectedLayout>} />
+          <Route path="/settings/integrations" element={<ProtectedLayout><SystemSettingsIntegrations /></ProtectedLayout>} />
           
           {/* UI Routes */}
           <Route path="/ui/driver-management" element={<DriverManagement />} />

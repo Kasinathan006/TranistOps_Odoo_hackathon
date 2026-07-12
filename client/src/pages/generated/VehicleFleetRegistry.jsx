@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 
 const VehicleFleetRegistry = () => {
+    const [showNewEntryModal, setShowNewEntryModal] = useState(false);
     return (
         <div className="w-full h-full">
             
@@ -20,7 +21,9 @@ const VehicleFleetRegistry = () => {
 </div>
 <div className="flex-1 overflow-y-auto py-4">
 <div className="px-3 pb-4">
-<button className="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary rounded h-9 px-4 text-label-md font-label-md hover:bg-surface-tint transition-colors duration-150 shadow-sm">
+<button 
+    onClick={() => setShowNewEntryModal(true)}
+    className="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary rounded h-9 px-4 text-label-md font-label-md hover:bg-surface-tint transition-colors duration-150 shadow-sm">
 <span className="material-symbols-outlined text-sm">add</span>
                     New Entry
                 </button>
@@ -122,7 +125,9 @@ const VehicleFleetRegistry = () => {
 <span className="material-symbols-outlined text-sm">filter_list</span>
                             Filter
                         </button>
-<button className="h-9 px-4 flex items-center gap-2 rounded bg-primary-container text-on-primary text-label-md font-label-md hover:bg-surface-tint transition-colors duration-150 shadow-sm">
+<button 
+    onClick={() => setShowNewEntryModal(true)}
+    className="h-9 px-4 flex items-center gap-2 rounded bg-primary-container text-on-primary text-label-md font-label-md hover:bg-surface-tint transition-colors duration-150 shadow-sm">
 <span className="material-symbols-outlined text-sm">add</span>
                             Add Vehicle
                         </button>
@@ -163,7 +168,7 @@ const VehicleFleetRegistry = () => {
 <th className="px-4 py-2.5 text-label-sm font-label-sm text-secondary border-b border-outline-variant">Type</th>
 <th className="px-4 py-2.5 text-label-sm font-label-sm text-secondary border-b border-outline-variant">VIN</th>
 <th className="px-4 py-2.5 text-label-sm font-label-sm text-secondary border-b border-outline-variant">Status</th>
-<th className="px-4 py-2.5 text-label-sm font-label-sm text-secondary border-b border-outline-variant text-right">Odometer (mi)</th>
+<th className="px-4 py-2.5 text-label-sm font-label-sm text-secondary border-b border-outline-variant text-right">Odometer (km)</th>
 <th className="px-4 py-2.5 text-label-sm font-label-sm text-secondary w-16 border-b border-outline-variant text-center">Actions</th>
 </tr>
 </thead>
@@ -274,6 +279,59 @@ const VehicleFleetRegistry = () => {
 </div>
 </div>
 </main>
+
+{showNewEntryModal && (
+    <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
+        <div className="bg-surface rounded-xl shadow-lg w-full max-w-md flex flex-col max-h-[90vh]">
+            <div className="flex items-center justify-between p-4 border-b border-outline-variant">
+                <h3 className="text-title-md font-bold text-on-surface">Add New Vehicle</h3>
+                <button onClick={() => setShowNewEntryModal(false)} className="text-secondary hover:text-on-surface">
+                    <span className="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div className="p-4 overflow-y-auto flex-1">
+                <form className="space-y-4">
+                    <div>
+                        <label className="block text-label-sm font-medium text-on-surface mb-1">Plate Number</label>
+                        <input type="text" className="w-full h-10 px-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="e.g. TN-01-AB-1234" />
+                    </div>
+                    <div>
+                        <label className="block text-label-sm font-medium text-on-surface mb-1">Model / Make</label>
+                        <input type="text" className="w-full h-10 px-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="e.g. Tata Prima 5530.S" />
+                    </div>
+                    <div>
+                        <label className="block text-label-sm font-medium text-on-surface mb-1">Type</label>
+                        <select className="w-full h-10 px-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-surface">
+                            <option>Heavy Truck</option>
+                            <option>Cargo Van</option>
+                            <option>Light Commercial</option>
+                            <option>Refrigerated Truck</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-label-sm font-medium text-on-surface mb-1">VIN (Chassis No.)</label>
+                        <input type="text" className="w-full h-10 px-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Enter VIN" />
+                    </div>
+                    <div>
+                        <label className="block text-label-sm font-medium text-on-surface mb-1">Initial Odometer (km)</label>
+                        <input type="number" className="w-full h-10 px-3 rounded border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="0" />
+                    </div>
+                </form>
+            </div>
+            <div className="p-4 border-t border-outline-variant flex justify-end gap-3 bg-surface-container-lowest rounded-b-xl">
+                <button onClick={() => setShowNewEntryModal(false)} className="px-4 py-2 text-label-md font-medium text-primary hover:bg-primary-container/20 rounded transition-colors">
+                    Cancel
+                </button>
+                <button onClick={() => {
+                    alert("Vehicle added successfully!");
+                    setShowNewEntryModal(false);
+                }} className="px-4 py-2 bg-primary text-on-primary text-label-md font-medium rounded hover:bg-primary/90 transition-colors">
+                    Save Vehicle
+                </button>
+            </div>
+        </div>
+    </div>
+)}
 
         </div>
     );

@@ -27,11 +27,31 @@ export default function Sidebar() {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto py-4">
-        <div className="px-3 pb-4">
+        <div className="px-3 pb-4 relative group">
           <button className="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary rounded h-9 px-4 text-label-md font-label-md hover:bg-surface-tint transition-colors duration-150 shadow-sm">
             <span className="material-symbols-outlined text-sm">add</span>
             New Entry
           </button>
+          
+          <div className="absolute left-3 right-3 top-full mt-1 bg-surface border border-outline rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+            <div className="py-1 flex flex-col">
+              <Link to="/trips?new=true" className="px-4 py-2 hover:bg-surface-container-high text-label-md text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">route</span> New Trip
+              </Link>
+              <Link to="/vehicles?new=true" className="px-4 py-2 hover:bg-surface-container-high text-label-md text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">local_shipping</span> New Vehicle
+              </Link>
+              <Link to="/drivers?new=true" className="px-4 py-2 hover:bg-surface-container-high text-label-md text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">person</span> New Driver
+              </Link>
+              <Link to="/fuel?new=true" className="px-4 py-2 hover:bg-surface-container-high text-label-md text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">local_gas_station</span> Fuel Log
+              </Link>
+              <Link to="/maintenance?new=true" className="px-4 py-2 hover:bg-surface-container-high text-label-md text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">build</span> Maintenance
+              </Link>
+            </div>
+          </div>
         </div>
         <nav className="px-3 space-y-1">
           {navItems.map(item => {
@@ -51,7 +71,14 @@ export default function Sidebar() {
               </Link>
             );
           })}
-          <Link className="flex items-center gap-3 px-3 py-2 rounded text-secondary hover:bg-surface-container-high border-l-4 border-transparent transition-colors duration-150 text-label-md font-label-md mt-6" to="/settings">
+          <Link 
+            className={`flex items-center gap-3 px-3 py-2 rounded transition-colors duration-150 text-label-md font-label-md mt-6 ${
+              pathname.startsWith('/settings')
+                ? 'text-primary border-l-4 border-primary bg-secondary-container/50' 
+                : 'text-secondary hover:bg-surface-container-high border-l-4 border-transparent'
+            }`} 
+            to="/settings"
+          >
             <span className="material-symbols-outlined text-lg">settings</span>
             <span>Settings</span>
           </Link>
