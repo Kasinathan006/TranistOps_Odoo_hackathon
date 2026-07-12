@@ -12,7 +12,7 @@ import Reports from './pages/Reports';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 
-// Generated UI Components
+// UI Components
 import DriverManagement from './pages/generated/DriverManagement';
 import FleetOverviewDashboard from './pages/generated/FleetOverviewDashboard';
 import LogisticsReportsAnalytics from './pages/generated/LogisticsReportsAnalytics';
@@ -55,7 +55,7 @@ export default function App() {
           <Route path="/fuel" element={<ProtectedLayout><Fuel /></ProtectedLayout>} />
           <Route path="/reports" element={<ProtectedLayout><Reports /></ProtectedLayout>} />
           
-          {/* Generated UI Routes */}
+          {/* UI Routes */}
           <Route path="/ui/driver-management" element={<DriverManagement />} />
           <Route path="/ui/fleet-overview-dashboard" element={<FleetOverviewDashboard />} />
           <Route path="/ui/logistics-reports-analytics" element={<LogisticsReportsAnalytics />} />
