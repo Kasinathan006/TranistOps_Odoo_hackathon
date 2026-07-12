@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.local
+dist/
+build/
+
+# postgres data — don't ever commit this
+server/pgdata/
+pgdata/
+
+# OS junk
+.DS_Store
+Thumbs.db

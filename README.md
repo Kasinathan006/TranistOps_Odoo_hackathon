@@ -1,67 +1,45 @@
-# TransitOps — Smart Transport Operations Platform
+# transitops 🚚
 
-Full-stack fleet & logistics management system. React + Vite frontend, Node/Express API,
-PostgreSQL database. Built end-to-end from `TransitOps_Build_Playbook.md`.
+building a smart transport operations platform for the odoo hackathon!
+stack: react + vite + node/express + postgres
 
-## Features
+we're building this overnight so the code is a bit messy but it works 🚀
 
-- JWT auth (seeded Fleet Manager account)
-- Vehicle registry (CRUD, filters, status lifecycle)
-- Driver management (CRUD, license-expiry highlighting)
-- Trip lifecycle: Draft → Dispatched → Completed / Cancelled with **all business rules enforced server-side inside transactions**
-- Maintenance service scheduler (opens → In Shop, closes → Available)
-- Fuel logs + operational expenses
-- Dashboard KPIs (auto-refresh) + Reports with charts and CSV export
+## what it does so far
+- **auth:** jwt based login (admin: admin@transitops.com / admin123)
+- **vehicles & drivers:** full crud, tracks if a vehicle is in shop or a driver's license is expired
+- **trips (wip):** dispatching logic that checks if the driver/vehicle is available and locks them
+- **maintenance & fuel logs (wip):** tracking expenses and taking trucks out of service for repairs
+- **dashboard:** tracking the main KPIs
 
-## Prerequisites
+## how to run this locally
 
-- Node.js 18+ and npm
-- PostgreSQL 13+ running locally (or a hosted Postgres URL)
+you'll need node 18+ and postgres.
 
-## 1. Database setup
-
+1. **database setup**
 ```bash
 createdb transitops
 psql -d transitops -f server/db/schema.sql
 ```
+*(this creates the tables and sets up the default admin user)*
 
-The schema seeds an admin login: **admin@transitops.com / admin123**
-
-## 2. Backend
-
+2. **backend**
 ```bash
 cd server
-cp .env.example .env          # then edit DATABASE_URL to match your Postgres
+cp .env.example .env # don't forget to add your db credentials!
 npm install
-npm run dev                   # http://localhost:5000
+npm run dev
 ```
+*(api runs on localhost:5000)*
 
-## 3. Frontend
-
+3. **frontend**
 ```bash
 cd client
 npm install
-npm run dev                   # http://localhost:5173
+npm run dev
 ```
+*(app runs on localhost:5173)*
 
-`client/.env.local` already points to `http://localhost:5000/api`.
-
-## Deployment
-
-- **Backend** → Render Web Service (`npm install` / `node index.js`), set `DATABASE_URL`,
-  `JWT_SECRET`, `NODE_ENV=production`, `CLIENT_URL`.
-- **Postgres** → Render PostgreSQL; run `schema.sql` against it once.
-- **Frontend** → Vercel, root `client`, env `VITE_API_URL=https://<backend>/api`.
-
-## Business rules enforced
-
-1. Unique registration number / license number
-2. Retired / In Shop / On Trip vehicles hidden from dispatch
-3. Expired or suspended drivers blocked from dispatch
-4. Cargo weight cannot exceed vehicle capacity
-5. Dispatch flips vehicle + driver to On Trip (atomic)
-6. Complete / cancel restore both to Available (atomic)
-7. Maintenance open → In Shop; close → Available (unless Retired)
-8. On-trip vehicles cannot enter maintenance
-
-See `../BUILD_SUMMARY.md` for the full breakdown of what was built.
+## deployment notes
+- backend goes to render (needs `DATABASE_URL` and `JWT_SECRET`)
+- frontend can just be tossed on vercel (make sure to set `VITE_API_URL`)
