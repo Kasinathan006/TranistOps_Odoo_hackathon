@@ -57,10 +57,18 @@ router.patch('/:id/close', auth, async (req, res) => {
     if (!maint) throw new Error('Maintenance record not found');
     if (maint.status === 'Closed') throw new Error('Already closed');
 
-    await client.query(
-      `UPDATE maintenance_logs SET status='Closed', closed_at=NOW(), cost=COALESCE($1, cost) WHERE id=$2`,
+    const updatedMaint = await client.query(
+      `UPDATE maintenance_logs SET status='Closed', closed_at=NOW(), cost=COALESCE($1, cost) WHERE id=$2 RETURNING *`,
       [cost, req.params.id]
     );
+    const finalCost = updatedMaint.rows[0].cost;
+
+    if (finalCost && finalCost > 0) {
+      await client.query(
+        `INSERT INTO expenses (vehicle_id, trip_id, type, amount, description, date) VALUES ($1, $2, $3, $4, $5, NOW())`,
+        [maint.vehicle_id, null, 'Maintenance', finalCost, maint.description]
+      );
+    }
 
     const vehicle = (await client.query('SELECT * FROM vehicles WHERE id = $1', [maint.vehicle_id])).rows[0];
     if (vehicle.status !== 'Retired') {

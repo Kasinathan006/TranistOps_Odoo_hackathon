@@ -18,14 +18,26 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   const { vehicle_id, trip_id, liters, cost, date } = req.body;
+  const client = await pool.connect();
   try {
-    const result = await pool.query(
+    await client.query('BEGIN');
+    const result = await client.query(
       `INSERT INTO fuel_logs (vehicle_id, trip_id, liters, cost, date) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [vehicle_id, trip_id || null, liters, cost, date]
     );
+    
+    await client.query(
+      `INSERT INTO expenses (vehicle_id, trip_id, type, amount, description, date) VALUES ($1, $2, $3, $4, $5, $6)`,
+      [vehicle_id, trip_id || null, 'Fuel', cost, `Fuel log: ${liters} liters`, date]
+    );
+
+    await client.query('COMMIT');
     res.json(result.rows[0]);
   } catch (err) {
+    await client.query('ROLLBACK');
     res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
   }
 });
 
