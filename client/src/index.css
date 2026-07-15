@@ -5,20 +5,27 @@
 @layer base {
   body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f8f9ff;
-    color: #121c2a;
+    @apply bg-[#f8f9ff] text-[#121c2a] dark:bg-[#0f172a] dark:text-[#f1f5f9] transition-colors duration-200 antialiased;
   }
 }
 
 @layer utilities {
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
   .icon-fill { font-variation-settings: 'FILL' 1; }
-  .dense-table th, .dense-table td { padding: 8px 12px; height: 40px; border-bottom: 1px solid #c3c6d7; text-align: left; }
-  .dense-table th { background-color: #f8f9ff; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid #c3c6d7;}
   
-  /* Scrollbar styling for density */
+  .dense-table th, .dense-table td { 
+    @apply px-3 py-2.5 h-11 border-b border-[#c3c6d7] dark:border-[#334155] text-left text-body-sm transition-colors; 
+  }
+  .dense-table th { 
+    @apply bg-[#f8f9ff] dark:bg-[#1e293b] text-on-surface-variant dark:text-[#cbd5e1] font-semibold sticky top-0 z-10 border-b-2 border-[#c3c6d7] dark:border-[#475569];
+  }
+  .dense-table tr:hover td {
+    @apply bg-surface-container-low dark:bg-[#334155]/50;
+  }
+  
+  /* Scrollbar styling for density & dark mode */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #c3c6d7; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #737686; }
+  ::-webkit-scrollbar-thumb { @apply bg-[#c3c6d7] dark:bg-[#475569] rounded; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-[#737686] dark:bg-[#64748b]; }
 }

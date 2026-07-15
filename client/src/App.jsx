@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Vehicles from './pages/Vehicles';
@@ -28,14 +29,14 @@ import VehicleFleetRegistry from './pages/generated/VehicleFleetRegistry';
 
 function ProtectedLayout({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="flex items-center justify-center h-screen bg-surface">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center h-screen bg-surface dark:bg-[#090d16] text-on-surface dark:text-slate-200">Loading...</div>;
   if (!user) return <Navigate to="/login" />;
   return (
-    <div className="w-full h-full bg-background flex">
+    <div className="w-full h-full bg-background dark:bg-[#090d16] flex transition-colors duration-200">
       <Sidebar />
       <main className="flex-1 flex flex-col md:ml-[260px] w-full md:w-[calc(100%-260px)] h-screen overflow-hidden">
         <Topbar />
-        <div className="flex-1 overflow-auto bg-background">
+        <div className="flex-1 overflow-auto bg-background dark:bg-[#090d16] transition-colors duration-200">
           {children}
         </div>
       </main>
@@ -45,35 +46,37 @@ function ProtectedLayout({ children }) {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Toaster position="top-right" />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<ProtectedLayout><Dashboard /></ProtectedLayout>} />
-          <Route path="/vehicles" element={<ProtectedLayout><Vehicles /></ProtectedLayout>} />
-          <Route path="/drivers" element={<ProtectedLayout><Drivers /></ProtectedLayout>} />
-          <Route path="/trips" element={<ProtectedLayout><Trips /></ProtectedLayout>} />
-          <Route path="/maintenance" element={<ProtectedLayout><Maintenance /></ProtectedLayout>} />
-          <Route path="/fuel" element={<ProtectedLayout><Fuel /></ProtectedLayout>} />
-          <Route path="/reports" element={<ProtectedLayout><Reports /></ProtectedLayout>} />
-          <Route path="/settings" element={<ProtectedLayout><SystemSettingsConfiguration /></ProtectedLayout>} />
-          <Route path="/settings/users" element={<ProtectedLayout><SystemSettingsUsers /></ProtectedLayout>} />
-          <Route path="/settings/fleet" element={<ProtectedLayout><SystemSettingsFleet /></ProtectedLayout>} />
-          <Route path="/settings/integrations" element={<ProtectedLayout><SystemSettingsIntegrations /></ProtectedLayout>} />
-          
-          {/* UI Routes */}
-          <Route path="/ui/driver-management" element={<DriverManagement />} />
-          <Route path="/ui/fleet-overview-dashboard" element={<FleetOverviewDashboard />} />
-          <Route path="/ui/logistics-reports-analytics" element={<LogisticsReportsAnalytics />} />
-          <Route path="/ui/maintenance-service-scheduler" element={<MaintenanceServiceScheduler />} />
-          <Route path="/ui/operational-expenses-ledger" element={<OperationalExpensesLedger />} />
-          <Route path="/ui/system-settings-configuration" element={<SystemSettingsConfiguration />} />
-          <Route path="/ui/tms-login" element={<TmsLogin />} />
-          <Route path="/ui/trips-logistics-log" element={<TripsLogisticsLog />} />
-          <Route path="/ui/vehicle-fleet-registry" element={<VehicleFleetRegistry />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Toaster position="top-right" />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<ProtectedLayout><Dashboard /></ProtectedLayout>} />
+            <Route path="/vehicles" element={<ProtectedLayout><Vehicles /></ProtectedLayout>} />
+            <Route path="/drivers" element={<ProtectedLayout><Drivers /></ProtectedLayout>} />
+            <Route path="/trips" element={<ProtectedLayout><Trips /></ProtectedLayout>} />
+            <Route path="/maintenance" element={<ProtectedLayout><Maintenance /></ProtectedLayout>} />
+            <Route path="/fuel" element={<ProtectedLayout><Fuel /></ProtectedLayout>} />
+            <Route path="/reports" element={<ProtectedLayout><Reports /></ProtectedLayout>} />
+            <Route path="/settings" element={<ProtectedLayout><SystemSettingsConfiguration /></ProtectedLayout>} />
+            <Route path="/settings/users" element={<ProtectedLayout><SystemSettingsUsers /></ProtectedLayout>} />
+            <Route path="/settings/fleet" element={<ProtectedLayout><SystemSettingsFleet /></ProtectedLayout>} />
+            <Route path="/settings/integrations" element={<ProtectedLayout><SystemSettingsIntegrations /></ProtectedLayout>} />
+            
+            {/* UI Routes */}
+            <Route path="/ui/driver-management" element={<DriverManagement />} />
+            <Route path="/ui/fleet-overview-dashboard" element={<FleetOverviewDashboard />} />
+            <Route path="/ui/logistics-reports-analytics" element={<LogisticsReportsAnalytics />} />
+            <Route path="/ui/maintenance-service-scheduler" element={<MaintenanceServiceScheduler />} />
+            <Route path="/ui/operational-expenses-ledger" element={<OperationalExpensesLedger />} />
+            <Route path="/ui/system-settings-configuration" element={<SystemSettingsConfiguration />} />
+            <Route path="/ui/tms-login" element={<TmsLogin />} />
+            <Route path="/ui/trips-logistics-log" element={<TripsLogisticsLog />} />
+            <Route path="/ui/vehicle-fleet-registry" element={<VehicleFleetRegistry />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
